@@ -34,4 +34,5 @@ Route::prefix('user')->middleware(['jwt.auth'])->group(function () {
     Route::get('/{id}', [UserController::class, 'findById']);
     Route::put('/{id}', [UserController::class, 'update']);
 
+    Route::post('/{user}/rol/{rol}', [UserController::class, 'addRol']);
 });

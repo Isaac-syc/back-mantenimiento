@@ -11,13 +11,13 @@ class UserController extends Controller
 {
     public function all()
     {
-        $users = User::all();
+        $users = User::with('roles')->get();
         return response()->json(['data' => ['users' => $users]]);
     }
 
     public function findById($id)
     {
-        $user = User::find($id);
+        $user = User::with('roles')->find($id);
         return response()->json(['data' => ['user' => $user]]);
     }
 
@@ -35,5 +35,17 @@ class UserController extends Controller
         $user->save();
 
         return response()->json(['data' => ['user' => $user]]);
+    }
+
+
+    public function addRol(int $user, int $rol)
+    {
+        $user = User::with('roles')->find($user);
+        if (!isset($user)) {
+            return response()->json(['error' => ['message' => 'usuario no encontrado']])->setStatusCode(404);
+        }
+        $user->roles()->attach($rol);
+
+        return response()->json(['data' => ['message' => 'actualizado de manera exitosa']]);
     }
 }

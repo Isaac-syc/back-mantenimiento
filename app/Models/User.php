@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -21,6 +22,7 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'name',
         'email',
+        'rol',
         'password',
     ];
 
@@ -54,4 +56,11 @@ class User extends Authenticatable implements JWTSubject
             'username' => $this->username,
         ];
     }
+
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Rol::class, 'rol_usuario');
+    }
+
 }
